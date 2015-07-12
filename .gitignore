@@ -34,3 +34,16 @@
 
 # Debug files
 *.dSYM/
+
+###############################
+######### CODEBLOCKS ##########
+###############################
+
+bin/
+Debug/
+Release/
+*.o
+*.out
+*.depend
+*.layout
+*.exe
