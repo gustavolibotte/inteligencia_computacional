@@ -276,11 +276,6 @@ double* EvolucaoDiferencialDPS(){
     double** populacao;
     populacao = inicializaPop(tamPop, dimensoes, regiaoDeBusca);
 
-
-    // somente para regioes
-    double clone[8] = {0.8595113174, 0.1108324252, 0.6520854355, 2.2093628594, 2.3331228566, 4.4609036845, 100, 201};
-    populacao = insereNaPop(0, dimensoes, clone , populacao);
-
     double* melhorX = pegaIndividuo(1, dimensoes, populacao);
     double melhorFit = funcaoObjetivo(melhorX);
 
