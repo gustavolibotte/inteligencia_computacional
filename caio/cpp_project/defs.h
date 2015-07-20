@@ -5,38 +5,24 @@
 #define isfinite(a) (!(fabs((a)) > DBL_MAX) && !((a) != (a)))
 
 namespace optimization {
+	/* EPSILON -  Smallest value */
 	const double EPSILON = 10e-6;
+	/* DEN - Alternative value for denominator equals to zero */
 	const double DEN = 1.0;
+	/* NC - Crossover distribuition index */
+	const double NC = 20;
+	/* NM - Mutation distribuition index */
+	const double NM = 20;
 	double HAMMER_BEST[] = {
-		0.437629,
-		0.0643525,
-		0.27849,
-		2.48756,
-		4.44427,
-		4.46137,
-		101.377,
-		201.935
-	}; 
-	double HAMMER_BEST2[] = {
-		0.644076,
-		0.194823,
-		0.583695,
-		2.8064,
-		4.40238,
-		4.51823,
+		1.0753,
+		0.126606,
+		0.757567,
+		2.28036,
+		2.41894,
+		4.81758,
 		100,
-		201,
-	};
-	double HAMMER_BEST3[] = {
-		0.661133,
-		0.214906,
-		0.597326,
-		2.86149,
-		4.96617,
-		4.4171,
-		100,
-		201,
-	};
+		201
+	};//1.2722
 
 	double Kappel[] = {
 		1.0628331407,
@@ -48,14 +34,14 @@ namespace optimization {
 		100,
 		201,
 	};
-	double paper_best[] = {
-		0.6280,
-		0.1604,
-		0.6808,
-		2.7087,
-		3.0394,
-		4.7638,
-		101,
+	double Gustavo[] = {
+		1.072151,
+		0.151212,
+		0.758954,
+		2.278674,
+		2.502342,
+		4.688076,
+		100,
 		201
 	};
 }

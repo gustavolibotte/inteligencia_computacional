@@ -130,21 +130,21 @@ namespace optimization {
 		 return uniform_dist(e2);
 	}
 
-	double cross_fact(double rate) {
+	double cross_fact() {
 		double r = rand_uniform();
-		double b = pow((2.0 * r), (1.0 / (rate + 1.0)));
+		double b = pow((2.0 * r), (1.0 / (NC + 1.0)));
 
-		double b2 = b > 1.0 ? (r == 1.0 ? 0 : 1 / pow(2 * (1-r), 1.0 / (rate + 1.0))) : b;
+		double b2 = b > 1.0 ? (r == 1.0 ? 0 : 1 / pow(2 * (1-r), 1.0 / (NC + 1.0))) : b;
 		assert(isfinite(b2));
 		return b2;
 	}
 
-	double mut_fact(double rate) {
+	double mut_fact() {
 		double r = rand_uniform();
 		if(r > 0.5) {
-			r = pow((2.0 * r), (1.0 / (rate + 1.0)) - 1.0);
+			r = pow((2.0 * r), (1.0 / (NM + 1.0)) - 1.0);
 		} else {
-			r = pow((2*(1-r)), (1.0 / (rate + 1.0)));
+			r = pow((2*(1-r)), (1.0 / (NM + 1.0)));
 		}
 		assert(isfinite(r));
 		return r;

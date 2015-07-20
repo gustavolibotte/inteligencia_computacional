@@ -164,20 +164,22 @@ endfunction
 
 //begin crossover-mutation
 
-function b = cross_fact(cross_rate)
+function b = cross_fact()
+    C_DIST_INDEX = 20;
     r = rand();
-    b = (2*r)^(1/(cross_rate +1));
+    b = (2*r)^(1/(C_DIST_INDEX +1));
     if b > 1 then
-        b = 1 / ((2*(1-r))^(1/(cross_rate +1)));
+        b = 1 / ((2*(1-r))^(1/(C_DIST_INDEX +1)));
     end
 endfunction
 
 function d = mut_fact(mut_rate)
     r = rand();
+    M_DIST_INDEX = 20;
     if r < 0.5 then
-        d = (2*r)^(1 / (mut_rate + 1)) - 1;
+        d = (2*r)^(1 / (M_DIST_INDEX + 1)) - 1;
     else
-        d = 1 - (2*(1-r))^(1/(mut_rate + 1));
+        d = 1 - (2*(1-r))^(1/(M_DIST_INDEX + 1));
     end
 endfunction
 
@@ -185,37 +187,48 @@ endfunction
 function [ch_p, ch_m] = crossover(p1, p2, cross_rate, lb, ub)
     ch_p = [];
     ch_m = [];
-    for i=1:length(p1)
-        b = cross_fact(cross_rate);
-        ch_p(i) = 0.5 * ((1-b)*p1(i) + (1+b)*p2(i));
-        ch_m(i) = 0.5 * ((1+b)*p1(i) + (1-b)*p2(i));
-        while(ch_p(i) > ub) 
-            ch_p(i) = ch_p(i) - (ub - lb);
+    
+    if(rand() <= cross_rate) 
+        b = cross_fact();
+        for i=1:length(p1)
+            ch_p(i) = 0.5 * ((1-b)*p1(i) + (1+b)*p2(i));
+            ch_m(i) = 0.5 * ((1+b)*p1(i) + (1-b)*p2(i));
+            while(ch_p(i) > ub) 
+                ch_p(i) = ch_p(i) - (ub - lb);
+            end
+            while(ch_m(i) > ub) 
+                ch_m(i) = ch_m(i) - (ub - lb);
+            end
+            while(ch_p(i) < lb) 
+                ch_p(i) = ch_p(i) + (ub - lb);
+            end
+            while(ch_m(i) < lb) 
+                ch_m(i) = ch_m(i) + (ub - lb);
+            end
         end
-        while(ch_m(i) > ub) 
-            ch_m(i) = ch_m(i) - (ub - lb);
-        end
-        while(ch_p(i) < lb) 
-            ch_p(i) = ch_p(i) + (ub - lb);
-        end
-        while(ch_m(i) < lb) 
-            ch_m(i) = ch_m(i) + (ub - lb);
-        end
+    else
+        ch_p = p1;
+        ch_m = p2;
     end
+    
 endfunction
 
 //Polynomial mutation
 function mut = mutation(ch, mut_rate, p1, p2, lb, ub)
     mut = [];
-    for i=1:length(ch)
-        d = mut_fact(mut_rate);
-        mut(i) = ch(i) + (max(p1(i), p2(i)) - min(p1(i), p2(i))) * d;
-        while(mut(i) > ub) 
-            mut(i) = mut(i) - (ub - lb);
+    if(rand() <= mut_rate)
+        d = mut_fact();
+        for i=1:length(ch)
+            mut(i) = ch(i) + (max(p1(i), p2(i)) - min(p1(i), p2(i))) * d;
+            while(mut(i) > ub) 
+                mut(i) = mut(i) - (ub - lb);
+            end
+            while(mut(i) < lb) 
+                mut(i) = mut(i) + (ub - lb);
+            end
         end
-        while(mut(i) < lb) 
-            mut(i) = mut(i) + (ub - lb);
-        end
+    else
+        mut = ch;
     end
 endfunction
  
@@ -659,6 +672,7 @@ function [s_pop, s_fit] = halve_pop_by_diversity(l_pop, tps, sb, my_f, num)
 
         fronts = nd_sort(l_fit);
         s_nd = calc_s_nd(fronts(1), cb);
+
         if s_nd > num then
             [s_pop, s_fit] = reduce_pop(l_pop, l_fit, num);
         else

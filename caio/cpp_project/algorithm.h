@@ -156,20 +156,24 @@ namespace optimization {
 		for(int i = 0; i < partitions.size(); i++) {
 			std::uniform_int_distribution<int> ui(begin, partitions[i]);
 			for(int j = begin; j < partitions[i]; j++) {
-				mut = mut_fact(m_rate);
-				if(up) {
-					cross = cross_fact(c_rate);
-					i1 = ui(e1);
-					i2 = ui(e1);
-					//i1 = begin + (rand() % (partitions[i] - begin));
-					//i2 = begin + (rand() % (partitions[i] - begin));
-					up = false;
-					bin_crossover_p(p[i1], p[i2], p[mid], cross);
+				if(rand_uniform() <= c_rate) {
+					if(up) {
+						cross = cross_fact();
+						i1 = ui(e1);
+						i2 = ui(e1);
+						up = false;
+						bin_crossover_p(p[i1], p[i2], p[mid], cross);
+					} else {
+						up = true;
+						bin_crossover_m(p[i1], p[i2], p[mid], cross);
+					}
+					if(rand_uniform() <= m_rate) {
+						mut = mut_fact();
+						bin_mutation(p[i1], p[i2], p[mid], mut);
+					}
 				} else {
-					up = true;
-					bin_crossover_m(p[i1], p[i2], p[mid], cross);
+					p.restartIndividual(mid);
 				}
-				bin_mutation(p[i1], p[i2], p[mid], cross);
 				p[mid].needUpdate.fit = true;
 				p[mid].lc_class = i;
 				mid++;

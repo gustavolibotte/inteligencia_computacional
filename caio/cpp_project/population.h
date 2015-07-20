@@ -241,6 +241,13 @@ namespace optimization {
 			ensureBounds(PopulationDivision::FIRST_HALF);
 		}
 
+		void restartIndividual(int i) {
+			assert(i >= 0 && i < pop.size());
+			for(int j = 0; j < pop[i].size(); j++) {
+				pop[i][j] = (*bounds_).lower_bounds[j] + ((*bounds_).upper_bounds[j] - (*bounds_).lower_bounds[j]) * rand_uniform();
+			}
+		}
+
 		int s_in(PopulationDivision pd) {
 			int begin = 0, end = 0;
 			getIndex(pd, begin, end);

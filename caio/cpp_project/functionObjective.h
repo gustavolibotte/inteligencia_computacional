@@ -42,10 +42,10 @@ namespace optimization {
 	public:
 		void eval(std::vector<double> & in, std::vector<double> & out) {
 			::eval(in);
-			out[0] = dkef > 0.01 ? 5*dkef : 0.0;
-			out[1] = dfluxo > 0.01 ? 5*dfluxo : 0.0;
+			out[0] = dkef > 0.01 ? dkef : 0.0;
+			out[1] = dfluxo > 0.01 ? dfluxo : 0.0;
 			out[2] = FP;
-			out[3] = ktest < kef ? 5*dktest/0.03 : 0.0;
+			out[3] = ktest < kef ? dktest/0.03 : 0.0;
 		}
 	};*/
 
@@ -67,10 +67,10 @@ namespace optimization {
 		for(int i = begin + idx; i < end; i+= NUM) {
 			hm[idx]->eval((*pop)[i].x);
 			
-			(*pop)[i].fit[0] = hm[idx]->dkef > 0.01 ? 5*hm[idx]->dkef : 0.0;
-			(*pop)[i].fit[1] = hm[idx]->dfluxo > 0.01 ? 5*hm[idx]->dfluxo : 0.0;
+			(*pop)[i].fit[0] = hm[idx]->dkef > 0.01 ? hm[idx]->dkef : 0.0;
+			(*pop)[i].fit[1] = hm[idx]->dfluxo > 0.01 ? hm[idx]->dfluxo : 0.0;
 			(*pop)[i].fit[2] = hm[idx]->FP;
-			(*pop)[i].fit[3] = hm[idx]->ktest < hm[idx]->kef ? 5*hm[idx]->dktest/0.03 : 0.0;
+			(*pop)[i].fit[3] = hm[idx]->ktest < hm[idx]->kef ? hm[idx]->dktest/0.03 : 0.0;
 		}
 	}
 
